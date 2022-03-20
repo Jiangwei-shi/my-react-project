@@ -7,19 +7,19 @@ import {
 
 import {
     createUser,
-    deleteUsersByUsername, findUserById
+    deleteUsersByUsername
 } from "../services/users-service";
 
 describe('can create tuit with REST API', () => {
   // TODO: implement this
-//create a user for test.
+    //create a user for test.
     const User = {
         username: 'stone',
         password: 'stone1998',
         email: 'stone@gmail.com'
     }
 
-//Create a Tuit for test.
+    //Create a Tuit for test.
     const Tuit = {
         _id: "62199f2f199814d177fa4f1c",
         tuit: "what a happy day it is!",
@@ -49,7 +49,6 @@ describe('can create tuit with REST API', () => {
         newTuit = await createTuit(newUser._id, Tuit);
         expect(newTuit.tuit).toEqual(Tuit.tuit);
         expect(newTuit.postedBy).toEqual(newUser._id);
-
     });
 });
 
@@ -105,7 +104,7 @@ describe('can retrieve a tuit by their primary key with REST API', () => {
         email: 'stone@gmail.com'
     }
 
-//Create a Tuit for test.
+    //Create a Tuit for test.
     const Tuit = {
         _id: "62199f2f199814d177fa4f1c",
         tuit: "what a happy day it is!",
@@ -128,25 +127,20 @@ describe('can retrieve a tuit by their primary key with REST API', () => {
     });
 
     test('can find a tuit via ID with REST API', async() => {
-        //new tuit created with mockTuit.postedBy, which is made with newuser._id
-        newTuit = await createTuit(Tuit.postedBy, Tuit);
-
+        newTuit = await createTuit(newUser._id, Tuit);
         expect(newTuit._id).toEqual(Tuit._id);
         expect(newTuit.tuit).toEqual(Tuit.tuit);
         expect(newTuit.postedBy).toEqual(Tuit.postedBy);
-        //console.log(newTuit);
 
         let existingTuit = await findTuitById(newTuit._id);
-        //console.log(existingTuit);
-
+        expect(existingTuit._id).toEqual(newTuit._id);
         expect(existingTuit.tuit).toEqual(newTuit.tuit);
-        //Professors Model, stored as a User for PostedBy
         expect(existingTuit.postedBy._id).toEqual(newTuit.postedBy);
     });
 });
 
 describe('can retrieve all tuits with REST API', () => {
-  // TODO: implement this
+    // TODO: implement this
     //create a user for test.
     const User = {
         username: 'stone',
@@ -154,25 +148,24 @@ describe('can retrieve all tuits with REST API', () => {
         email: 'stone@gmail.com'
     }
 
-//Create a Tuit for test.
-    //Create Fake Tuit
+    //Create Tuits for test.
     const firstTuit = {
         _id: "62184c059eb449f9c82c1ed2",
-        tuit: "Let's make a list",
+        tuit: "example tuit one",
         postedBy: ""
     };
 
-//Create Fake Tuit
+    //Create Fake Tuit
     const secondTuit = {
         _id: "62184c059eb449f9c82c1ed3",
-        tuit: "to test how the tuits pull",
+        tuit: "example tuit two",
         postedBy: ""
     };
 
-//Create Fake Tuit
+    //Create Fake Tuit
     const thirdTuit = {
         _id: "62184c059eb449f9c82c1ed4",
-        tuit: "in an async fashion!",
+        tuit: "example tuit three",
         postedBy: ""
     };
 
@@ -189,8 +182,12 @@ describe('can retrieve all tuits with REST API', () => {
 
     beforeAll( async ()=> {
 
+        await deleteTuit(firstTuit._id);
+        await deleteTuit(secondTuit._id);
+        await deleteTuit(thirdTuit._id);
+        await deleteUsersByUsername('stone');
         newUser = await createUser(User);
-        //have tuits with IDs
+        //connect tuits with users
         firstTuit.postedBy = newUser._id;
         secondTuit.postedBy = newUser._id;
         thirdTuit.postedBy = newUser._id;
@@ -214,11 +211,11 @@ describe('can retrieve all tuits with REST API', () => {
         expect(tuits.length).toBeGreaterThanOrEqual(listOfTuits.length);
 
         //Look for users we made tuit with
-        const tuitsWeInserted = tuits.filter(
+        const tuitInList = tuits.filter(
             tuit => listOfTuits.indexOf(tuit) >= 0 );
 
         //Verify properties
-        tuitsWeInserted.forEach(tuit => {
+        tuitInList.forEach(tuit => {
             const tuitExample = listOfTuits.find(tuit => tuit === tuit.tuit);
             expect(tuitExample.tuit).toEqual(tuit);
             expect(tuitExample.postedBy).toEqual(newUser);

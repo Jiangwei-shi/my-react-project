@@ -5,14 +5,14 @@ import {findAllUsers} from "../services/users-service";
 import axios from "axios";
 
 //according to piazza @279.
-
 //jest.mock('axios');
 
 const mock = jest.spyOn(axios, 'get');
+
 mock.mockImplementation(() =>
     Promise.resolve({data: {users: MOCKED_USERS}}));
 
-mock.mockRestore();  // restore original implementation
+mock.mockRestore();
 
 const MOCKED_USERS = [
   {username: 'ellen_ripley', password: 'lv426', email: 'repley@weyland.com', _id: "123"},

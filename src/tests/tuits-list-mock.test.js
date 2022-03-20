@@ -1,5 +1,4 @@
 import Tuits from "../components/tuits";
-//The above was fixed by Piazza @342
 import axios from "axios";
 import {render, screen} from "@testing-library/react";
 import {findAllTuits} from "../services/tuits-service";
@@ -8,15 +7,15 @@ import {HashRouter} from "react-router-dom";
 jest.mock('axios');
 
 const MOCKED_USERS = [
-    {username:"alice", password: "alice123", email: "alice@wonderland.com"},
-    {username: "bob", password: "bob234", email: "bob@marley.com"},
-    {username: "charlie", password: "snoopy", email: "charlie@peanut.com"}
+    {username:"Jinx", password: "Jinx123", email: "Jinx@gmail.com"},
+    {username: "Jhin", password: "Jhin123", email: "Jhin@gmail.com"},
+    {username: "Akali", password: "Akali123", email: "Akali@gmail.com"}
 ];
 
 const MOCKED_TUITS = [
-    {_id: "123", tuit: "alice's tuit", postedBy: ""},
-    {_id: "234", tuit: "bob's tuit", postedBy: ""},
-    {_id: "345", tuit: "charlie's tuit", postedBy:""}
+    {_id: "62184c032eb449f9c82c1ed4", tuit: "Jinx's tuit", postedBy: ""},
+    {_id: "62184c059eb449f9c82c1ed4", tuit: "Jhin's tuit", postedBy: ""},
+    {_id: "62184c059eb332f9c82c1ed4", tuit: "Akali's tuit", postedBy:""}
 ];
 
 test('tuit list renders mocked', async () => {
@@ -29,6 +28,6 @@ test('tuit list renders mocked', async () => {
             <Tuits tuits={tuits}/>
         </HashRouter>
     );
-    const tuit = screen.getByText(/alice's tuit/i);
+    const tuit = screen.getByText(/Jinx's tuit/i);
     expect(tuit).toBeInTheDocument();
 });

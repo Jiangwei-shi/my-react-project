@@ -4,24 +4,26 @@ import {HashRouter} from "react-router-dom";
 import {findAllTuits} from "../services/tuits-service";
 import axios from "axios";
 
+//according to piazza @279.
 //jest.mock('axios');
 
 const mock = jest.spyOn(axios, 'get');
+
 mock.mockImplementation(() =>
     Promise.resolve({data: {users: MOCKED_USERS}}));
 
-mock.mockRestore();  // restore original implementation
+mock.mockRestore();
 
 const MOCKED_USERS = [
-    {username:"alice", password: "alice123", email: "alice@wonderland.com"},
-    {username: "bob", password: "bob234", email: "bob@marley.com"},
-    {username: "charlie", password: "snoopy", email: "charlie@peanut.com"}
+    {username:"Jinx", password: "Jinx123", email: "Jinx@gmail.com"},
+    {username: "Jhin", password: "Jhin123", email: "Jhin@gmail.com"},
+    {username: "Akali", password: "Akali123", email: "Akali@gmail.com"}
 ];
 
 const MOCKED_TUITS = [
-    {_id: "123", tuit: "alice's tuit", postedBy: ""},
-    {_id: "234", tuit: "bob's tuit", postedBy: ""},
-    {_id: "345", tuit: "charlie's tuit", postedBy:""}
+    {_id: "62184c032eb449f9c82c1ed4", tuit: "Jinx's tuit", postedBy: ""},
+    {_id: "62184c059eb449f9c82c1ed4", tuit: "Jhin's tuit", postedBy: ""},
+    {_id: "62184c059eb332f9c82c1ed4", tuit: "Akali's tuit", postedBy:""}
 ];
 
 test('tuit list renders static tuit array', () => {
@@ -31,7 +33,7 @@ test('tuit list renders static tuit array', () => {
         <Tuits tuits = {MOCKED_TUITS}/>
       </HashRouter>
   );
-  const tuit = screen.getByText(/alice's tuit/i);
+  const tuit = screen.getByText(/Jinx's tuit/i);
   expect(tuit).toBeInTheDocument();
 });
 
